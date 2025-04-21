@@ -1,0 +1,22 @@
+$darkBlue: #1d1d47;
+$white: #ffffff;
+$accentWhite: #ffffffa8;
+$blue: #373797;
+$red: #9e2e2b;
+
+@mixin dark-mode {
+    background: $darkBlue;
+    color: $accentWhite;
+    a {
+      color: $accentWhite;
+      &:hover {
+        color: $blue;
+      }
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+      @include dark-mode;
+    }
+}

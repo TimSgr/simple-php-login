@@ -1,6 +1,7 @@
 <?php
 $db = db();
-
+$baseUrl = url();
+$loginUrl = $baseUrl . '/login/';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $db->createUser(
         $_POST['email'], 
@@ -8,7 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_POST['lastname'], 
         $_POST['password']
     );
-    echo $result;
+    if($result === "Success"){
+        redirect('/login/');
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -32,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="email" name="email" id="email" required />
 
         <label for="password">Passwort</label>
-        <input type="password" name="password" id="password" required />
+        <input type="text" name="password" id="password" required />
 
         <button type="submit">Nutzerkonto erstellen</button>
     </form>

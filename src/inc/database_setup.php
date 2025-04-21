@@ -33,7 +33,7 @@ final class DatabaseConnection {
     {
         $sql = "CREATE TABLE IF NOT EXISTS users (
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            emailAdress NVARCHAR(255) NOT NULL,
+            emailAdress VARCHAR(255) UNIQUE NOT NULL,
             firstname VARCHAR(30) NOT NULL,
             lastname VARCHAR(30) NOT NULL,
             password VARCHAR(255) NOT NULL
@@ -76,6 +76,32 @@ final class DatabaseConnection {
             return "Success";
         } else {
             return "Error: " . $stmt->error;
+        }
+    }
+
+    public function verifyUserLogin(string $emailAdress, string $password): string
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE emailAdress = ? LIMIT 1");
+    
+        if (!$stmt) {
+            return "Error: " . $this->conn->error;
+        }
+    
+        $stmt->bind_param("s", $emailAdress);
+        $stmt->execute();
+    
+        $result = $stmt->get_result();
+    
+        if ($result && $result->num_rows === 1) {
+            $user = $result->fetch_assoc();
+    
+            if (password_verify($password, $user['password'])) {
+                return "Valid";
+            } else {
+                return "Wrong Credentials";
+            }
+        } else {
+            return "Wrong Credentials";
         }
     }
 

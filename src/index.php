@@ -1,4 +1,8 @@
 <?php
+require_once __DIR__ . '/inc/session_helper.php';
+
+session_start_secure();
+
 require_once __DIR__ . '/inc/database_setup.php';
 
 $db = new DatabaseConnection();
@@ -9,6 +13,18 @@ function db(): DatabaseConnection
     return $GLOBALS['db'];
 }
 
+function url()
+{
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+    return $protocol . "://" . $_SERVER['HTTP_HOST'];
+}
+
+function redirect(string $path)
+{
+    $baseUrl = url();
+    header('Location: ' . $baseUrl . $path);
+    exit;
+}
 // Speicher $db global für die Funktion
 $GLOBALS['db'] = $db;
 
