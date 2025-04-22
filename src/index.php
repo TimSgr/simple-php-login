@@ -1,4 +1,6 @@
 <?php
+define('ABSPATH', __DIR__);
+
 require_once __DIR__ . '/inc/session_helper.php';
 
 session_start_secure();
